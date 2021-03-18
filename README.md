@@ -8,4 +8,4 @@ A JVM written in Dart. The overview page below gives the background on this proj
 [Preparation of Classes for Program Execution](https://github.com/platypusguy/jacobin/wiki/Preparation-for-Program-Execution)
 
 ### Thanks
-Any of the above pages carries a right-side panel in which we thank vendors and programmers who have maded the Jacobin project possible. There are many and we are deeply grateful to them. 
+Any of the above pages carries a right-side panel in which we thank vendors and programmers who have made the Jacobin project possible. There are many and we are deeply grateful to them. 
