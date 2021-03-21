@@ -68,7 +68,26 @@ class ArgsProcessor {
   parseCommandLine( String commandLine, Map<String,String> argsTable ) {
       List<String> args = commandLine.split( " " );
       for( String arg in args ) {
-        //CURR resume here. e.g., check for -XX: and see if they have any associated numeric values
+        if( arg.startsWith( "-XX:" )) { //experimental features, none currently supported
+          env.Globals.logger.log( "$arg is not supported. Ignored.", WARNING );
+          continue;
+        }
+
+        if( arg.startsWith( "-X" )) { //lesser-used options, some supported
+          switch( arg ) {
+            case( "-X"):              // =print info on -X switches that are supporte. TODO
+            case( "-Xint" ):          // =interpret-only, no JITing, which is our only run mode
+              argsTable.putIfAbsent( arg, () => null );
+              break;
+            default:
+              env.Globals.logger.log( "$arg is not supported. Ignored.", WARNING );
+              break;
+          }
+        }
+        //CURR: These are the more common switches and the ones we're most interested in.
+        switch( arg ) {
+
+        }
       }
   }
 

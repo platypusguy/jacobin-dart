@@ -25,7 +25,7 @@ void showUsage(IOSink stream) {
 void main( List<String> args ) {
   try {
     // Before anything else set up the logger and start the elapsed timer
-    env.Globals.logger = new NotificationHandler() //TODO: consider passing in the args
+    env.Globals.logger = new NotificationHandler()
       ..start();
     if (args.contains( "-vverbose" )) {
       env.Globals.logger.setLogLevel( FINEST );
@@ -87,7 +87,7 @@ void main( List<String> args ) {
           case "-verbose:class":
             env.Globals.logger.setLogLevel( CLASS );
             break;
-          case "-vverbose": //unique to Jacobin, not part of the JDK
+          case "-vverbose": // =very verbose; unique to Jacobin, not part of the JDK
             env.Globals.logger.setLogLevel( FINEST );
             break;
           case "--version":
