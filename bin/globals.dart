@@ -7,7 +7,6 @@
 library jacobin.globals;
 
 import 'dart:io' show Platform;
-import 'package:file/memory.dart'; //for in-memory files
 
 import 'classloader.dart';
 import 'notification_handler.dart';
@@ -29,6 +28,8 @@ class Globals {
   /// VM runtime parameters
   static List<String> args; // command-line args
   static String commandLine; // the command-line with spacing normalized
+  static Map<String, String> vmArgs; //the args that appear before the executable's name are VM args
+  static List<String> appArgs; //the args to the app. appArgs[0] is the JAR or class to run
 
   /// Latest supported version of Java
   static int bytecodeVersion = 55; //55 = Java 11 bytecode

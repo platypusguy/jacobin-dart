@@ -39,7 +39,7 @@ void main( List<String> args ) {
 
     env.Globals.args = args;
 
-    // remove formatting from command line, then add it to globals
+    // remove formatting from command line, then insert it to globals
     var commandLine = new StringBuffer();
     for( String arg in args ) {
       commandLine.write( arg + " " );
@@ -49,8 +49,8 @@ void main( List<String> args ) {
 
     String jarName = null;
     String className;
-    Set<String> appParams = new Set<String>();
-
+    // Set<String> appParams = new Set<String>();
+/*
     for( int i = 0; i < args.length; i++ ) {
       if ( args[i] == "-jar" ) {
         i += 1;
@@ -104,7 +104,7 @@ void main( List<String> args ) {
         }
       }
     }
-
+*/
     if( jarName != null ) {
       var handleJar = new jarprocess.JarProcessor();
       handleJar.process( jarName );
