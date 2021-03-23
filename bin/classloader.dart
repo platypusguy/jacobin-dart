@@ -17,7 +17,7 @@ class Classloader {
   ///directory holding the contents of the classloader
   SplayTreeMap<String, Uint8List> dir;
 
-  ///simple constructor creates and empty directory to hold classes
+  ///simple constructor creates an empty directory to hold classes
   Classloader() {
     dir = new SplayTreeMap<String, Uint8List>();
   }
@@ -51,7 +51,7 @@ class Classloader {
       return( false );
   }
 
-  ///validates that the bytecode version is valid on this VM (55 = Java 11)
+  ///validates that the class bytecode version is valid on this VM (55 = Java 11)
   bool validateSupportedJavaVersion( Uint8List classBytes ){
     return( classBytes[7] <= env.Globals.bytecodeVersion ? true : false );
   }
