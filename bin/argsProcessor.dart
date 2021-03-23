@@ -12,8 +12,6 @@ import 'notification_handler.dart';
 
 ///Processes all the args for the running program
 
-
-
 class ArgsProcessor {
   List<String> cliArgs; // strings passed on the command line when Jacobin invoked
 
