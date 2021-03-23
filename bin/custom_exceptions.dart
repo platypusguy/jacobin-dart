@@ -10,6 +10,6 @@ class ClassFormatException implements Exception{}
 class UnsupportedClassVersionException implements Exception {}
 
 ///the following exceptions are used by Jacobin and don't necessarily have counterparts in the JDK
-class ClassNotSpecified implements Exception{}
+class StartingClassNotSpecifiedException implements Exception{}
 
 

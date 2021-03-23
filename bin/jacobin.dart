@@ -48,92 +48,50 @@ void main( List<String> args ) {
     env.Globals.commandLine = commandLine.toString().trimRight();
     env.Globals.logger.log( "Command line: ${env.Globals.commandLine}", INFO );
 
-    var argsProcessor = new ArgsProcessor( args )..process();
-    if( env.Globals.appArgs == null ) {
-
+    new ArgsProcessor( args )..process();
+    if( env.Globals.appArgs == null ) { //no class/JAR to execute was specified
+      throw StartingClassNotSpecifiedException;
     }
-
-
-    String jarName = null;
-    String className;
-    // Set<String> appParams = new Set<String>();
-/*
-    for( int i = 0; i < args.length; i++ ) {
-      if ( args[i] == "-jar" ) {
-        i += 1;
-        jarName = args[i++];
-        while ( i < args.length )
-          appParams.add( args[i++] );
-
-        env.Globals.logger.log( "JAR: $jarName APP PARAMS: $appParams", CLASS );
-        break;
+    else {
+      if( env.Globals.appArgs[0].endsWith( ".jar" )) {
+        new jarprocess.JarProcessor(); // will insert main() class into globals
+        if( env.Globals.mainClassName == null ) {
+          throw StartingClassNotSpecifiedException;
+        }
       }
-      else if( ! args[i].startsWith( "-") && args[i].endsWith( ".class" )) {
-        className = args[i];
-        while ( i < args.length )
-          appParams.add( args[i++] );
-      }
-      else {
-        switch ( args[i] ) {
-          case "--help":
-            showUsage( stdout );
-            exit( 0 );
-            break;
-          case "-?":
-          case "-h":
-          case "-help":
-            showUsage( stderr );
-            exit( 0 );
-            break;
-          case "--show-version":
-            stderr.write( env.Globals.jacobinVer );
-            break;
-          case "-showversion":
-            print( env.Globals.jacobinVer );
-            break;
-          case "-verbose:class":
-            env.Globals.logger.setLogLevel( CLASS );
-            break;
-          case "-vverbose": // =very verbose; unique to Jacobin, not part of the JDK
-            env.Globals.logger.setLogLevel( FINEST );
-            break;
-          case "--version":
-            print(env.Globals.jacobinVer);
-            exit(0);
-            break;
-          case "-version":
-            stderr.write(env.Globals.jacobinVer);
-            exit(0);
-            break;
-          default:
-            stderr.write( "Invalid parameter ${args[i]} ignored." );
-            break;
+      else { //if the first app arg is not a JAR file, it must be a class
+        env.Globals.mainClassName = env.Globals.appArgs[0];
+        if( ! env.Globals.mainClassName.endsWith( ".class" )) {
+          env.Globals.mainClassName += ".class";
         }
       }
     }
-*/
-    if( jarName != null ) {
-      var handleJar = new jarprocess.JarProcessor();
-      handleJar.process( jarName );
-    }
-    else if( className != null ){
+
+    //we now have the name of the starting class and all the args. So, we begin execution.
+
       Uint8List bytes;
       try {
         // read the class's bytes into memory
-        bytes = File( className ).readAsBytesSync();
-        env.Globals.logger.log( "[load:class][opened $className]", CLASS );
+        bytes = File( env.Globals.mainClassName ).readAsBytesSync();
+        env.Globals.logger.log( "[load:class][opened ${env.Globals.mainClassName}]", CLASS );
       }
       on FileSystemException {
-        stderr.write("File $className not found or accessing it caused an error. Exiting.");
+        stderr.write(
+          "File ${env.Globals.mainClassName} not found or accessing it caused an error. Exiting.");
         return;
       }
-      env.Globals.mainClassName = className;
-      env.Globals.logger.log( "Main Class: $className", CLASS );
-      env.Globals.userLoader.loadClass( className, bytes );
-    }
-  } on ClassFormatException {
+      env.Globals.logger.log( "Main Class: ${env.Globals.mainClassName}", CLASS );
+      env.Globals.userLoader.loadClass( env.Globals.mainClassName, bytes );
+
+  }
+    on ClassFormatException {
+    shutdown(true);
+  }
+    on StartingClassNotSpecifiedException {
+      env.Globals.logger.log( "No starting class found. Aborting", SEVERE );
+      showUsage( stdout );
       shutdown( true );
-    }
+  }
     on UnsupportedClassVersionException {
     shutdown( true );
   }
@@ -148,13 +106,6 @@ void shutdown( bool dueToError ) {
   }
   else exit( 0 );
 }
-  // ArgParser argParser = new ArgParser();
-  //   argParser.addOption('classpath', abbr: 'c', defaultsTo: '.', help:
-  //               'class search path of directories and zip/jar files' );
-  //   // ..addFlag('enableassertions', abbr: 'ea', help: 'enable assertions',
-  //   //            defaultsTo: false )
-  //   // ..addFlag( "disableassertions", abbr: 'da', help: 'diable assertions',
-  //   //            defaultsTo: true );
-  //
+
 
 
