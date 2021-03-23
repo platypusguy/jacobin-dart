@@ -7,8 +7,6 @@
 import 'dart:io';
 import 'package:intl/intl.dart'; //for formatting numbers
 
-import 'globals.dart' as env;
-
 final watch = new Stopwatch();
 
 const int SEVERE  = 0, // the various logging levels. Can't use enums due to arithmetic comparisons

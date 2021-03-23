@@ -7,25 +7,20 @@
 library jacobin.JarProcessor;
 
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 
-import 'file_content.dart';
 import 'globals.dart' as env;
 import 'loaded_jar.dart';
 import 'notification_handler.dart';
 
-// import 'package:archive/archive.dart';
-// import 'package:archive/archive_io.dart';
 
-/**
- * Processes JAR files. It first reads them into memory, unzips them,
- * looks for the manifest and goes to the Main-Class if specified and
- * begins execution there.
- */
+///Processes JAR files. It first reads them into memory, unzips them,
+///looks for the manifest and goes to the Main-Class if specified and
+///begins execution there.
+
 
 class JarProcessor {
 
@@ -33,7 +28,7 @@ class JarProcessor {
   LoadedJar jarLoader;
 
   ///Accepts name of a JAR file and loads its classes into the appropriate classloader
-  void process(String jarName ) {
+  void process( String jarName ) {
     try {
       // read the JAR's bytes into memory
       bytes = File( jarName ).readAsBytesSync();
@@ -71,7 +66,7 @@ class JarProcessor {
           env.Globals.mainClassName = mainClassName;
           env.Globals.logger.log( "Main Class: $mainClassName", CLASS );
         }
-        else {
+        else { //if it's not the manifest, it must be a class, so put it in the classloader
           env.Globals.userLoader.loadClass( file.name, fileContents );
         }
       }
