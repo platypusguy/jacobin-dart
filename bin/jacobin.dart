@@ -10,8 +10,9 @@ library jacobin;
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'argsProcessor.dart';
 import 'classloader.dart';
-import 'custom_errors.dart';
+import 'custom_exceptions.dart';
 import 'globals.dart' as env;
 import 'jar_processor.dart' as jarprocess;
 import 'notification_handler.dart';
@@ -46,6 +47,12 @@ void main( List<String> args ) {
     }
     env.Globals.commandLine = commandLine.toString().trimRight();
     env.Globals.logger.log( "Command line: ${env.Globals.commandLine}", INFO );
+
+    var argsProcessor = new ArgsProcessor( args )..process();
+    if( env.Globals.appArgs == null ) {
+
+    }
+
 
     String jarName = null;
     String className;
@@ -124,10 +131,10 @@ void main( List<String> args ) {
       env.Globals.logger.log( "Main Class: $className", CLASS );
       env.Globals.userLoader.loadClass( className, bytes );
     }
-  } on ClassFormatError {
+  } on ClassFormatException {
       shutdown( true );
     }
-    on UnsupportedClassVersionError {
+    on UnsupportedClassVersionException {
     shutdown( true );
   }
   shutdown( false );

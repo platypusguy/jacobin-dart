@@ -8,7 +8,7 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'custom_errors.dart';
+import 'custom_exceptions.dart';
 import 'globals.dart' as env;
 import 'notification_handler.dart';
 
@@ -32,12 +32,12 @@ class Classloader {
       }
       else {
         env.Globals.logger.log( "This JVM does not support the bytecode version in: $name", SEVERE );
-        throw UnsupportedClassVersionError();
+        throw UnsupportedClassVersionException();
       }
     }
     else {
       env.Globals.logger.log( "Invalid Class: $name", SEVERE );
-      throw ClassFormatError();
+      throw ClassFormatException();
     }
   }
 
