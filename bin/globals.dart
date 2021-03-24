@@ -6,10 +6,13 @@
 
 library jacobin.globals;
 
+import 'dart:collection';
 import 'dart:io' show Platform;
 
 import 'classloader.dart';
+import 'method.dart';
 import 'notification_handler.dart';
+import 'thread_frame.dart';
 
 /* Data structures that need to be globally accessible
  * author: alb
@@ -37,6 +40,10 @@ class Globals {
   /// class loaders
   static Classloader bootstrap;
   static Classloader userLoader;
+
+  /// JVM-wide data structures
+  static SplayTreeSet<Method> methodArea;  // JVM method area
+  static Set<ThreadFrame> threadFrames;  // Array of running threads
 
   /// starting point
   static String mainClassName;

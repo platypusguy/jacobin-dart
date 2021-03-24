@@ -7,6 +7,7 @@
 ///Jacobin VM -- runs Java bytecode
 library jacobin;
 
+import 'dart:collection';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -15,7 +16,9 @@ import 'classloader.dart';
 import 'custom_exceptions.dart';
 import 'globals.dart' as env;
 import 'jar_processor.dart' as jarprocess;
+import 'method.dart';
 import 'notification_handler.dart';
+import 'thread_frame.dart';
 
 void showUsage(IOSink stream) {
   stream.write( "Helpful info goes here." );
@@ -68,20 +71,24 @@ void main( List<String> args ) {
     }
 
     //we now have the name of the starting class and all the args. So, we begin execution.
+    env.Globals.methodArea = new SplayTreeSet<Method>();
+    env.Globals.threadFrames = new Set<ThreadFrame>();
+    ///curr get the starting class from the classloader and pass it to the new ThreadFrame below. ******
+    env.Globals.threadFrames.add( new ThreadFrame( ) );
 
-      Uint8List bytes;
-      try {
-        // read the class's bytes into memory
-        bytes = File( env.Globals.mainClassName ).readAsBytesSync();
-        env.Globals.logger.log( "[load:class][opened ${env.Globals.mainClassName}]", CLASS );
-      }
-      on FileSystemException {
-        stderr.write(
-          "File ${env.Globals.mainClassName} not found or accessing it caused an error. Exiting.");
-        return;
-      }
-      env.Globals.logger.log( "Main Class: ${env.Globals.mainClassName}", CLASS );
-      env.Globals.userLoader.loadClass( env.Globals.mainClassName, bytes );
+    Uint8List bytes;
+    try {
+      // read the class's bytes into memory
+      bytes = File( env.Globals.mainClassName ).readAsBytesSync();
+      env.Globals.logger.log( "[load:class][opened ${env.Globals.mainClassName}]", CLASS );
+    }
+    on FileSystemException {
+      stderr.write(
+        "File ${env.Globals.mainClassName} not found or accessing it caused an error. Exiting.");
+      return;
+    }
+    env.Globals.logger.log( "Main Class: ${env.Globals.mainClassName}", CLASS );
+    env.Globals.userLoader.loadClass( env.Globals.mainClassName, bytes );
 
   }
     on ClassFormatException {
