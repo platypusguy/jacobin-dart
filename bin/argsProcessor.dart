@@ -22,16 +22,27 @@ class ArgsProcessor {
   }
   
   ///the main function. It gathers all the CLI parameters and puts then into a table,
-  ///which holds each param and its value (if any). The talbe is then stored in the globals.
+  ///which holds each param and its value (if any). The table is then stored in the globals.
   void process() {
-    String commandLine = gatherArgs();
-    
-    //copy the unparsed command line to globals for future reference and log it.
-    env.Globals.commandLine = commandLine;
-    env.Globals.logger.log( "Command line: ${env.Globals.commandLine}", INFO );
+    // remove formatting from the user's command line, then insert it to globals
+    var userCommandLine = new StringBuffer();
+    for( String arg in cliArgs ) {
+      userCommandLine.write( arg + " " );
+    }
 
-    //parse the command line into parameters and put them into a table/map.
-    parseCommandLine( commandLine );
+    env.Globals.userCommandLine = userCommandLine.toString().trimRight();
+    env.Globals.logger.log( "User command line: ${env.Globals.userCommandLine}", INFO );
+
+    String fullCommandLine = gatherArgs();
+    
+    //copy the full unparsed command line to globals for future reference and log it.
+    env.Globals.fullCommandLine = fullCommandLine;
+    if( env.Globals.fullCommandLine != env.Globals.userCommandLine ) {
+      env.Globals.logger.log("Full command line: ${env.Globals.fullCommandLine}", INFO);
+    }
+
+    //parse the command line into individual parameters and put them into a table/map.
+    parseCommandLine( fullCommandLine );
   }
 
   //gathers all the switches and CLI params from all the various sources and 

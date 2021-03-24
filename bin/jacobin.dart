@@ -42,15 +42,6 @@ void main( List<String> args ) {
     env.Globals.userLoader = new Classloader();
 
     env.Globals.args = args;
-
-    // remove formatting from command line, then insert it to globals
-    var commandLine = new StringBuffer();
-    for( String arg in args ) {
-      commandLine.write( arg + " " );
-    }
-    env.Globals.commandLine = commandLine.toString().trimRight();
-    env.Globals.logger.log( "Command line: ${env.Globals.commandLine}", INFO );
-
     new ArgsProcessor( args )..process();
     if( env.Globals.appArgs == null ) { //no class/JAR to execute was specified
       throw StartingClassNotSpecifiedException;

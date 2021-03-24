@@ -30,7 +30,8 @@ class Globals {
 
   /// VM runtime parameters
   static List<String> args; // command-line args
-  static String commandLine; // the command-line with spacing normalized
+  static String userCommandLine; // the command line as specified by the user
+  static String fullCommandLine; // the command line when optional env args are added, if any.
   static Map<String, String> vmArgs; //the args that appear before the executable's name are VM args
   static List<String> appArgs; //the args to the app. appArgs[0] is the JAR or class to run
 
