@@ -64,21 +64,20 @@ void main( List<String> args ) {
     //we now have the name of the starting class and all the args. So, we begin execution.
     env.Globals.methodArea = new SplayTreeSet<Method>();
     env.Globals.threadFrames = new Set<ThreadFrame>();
-    ///curr get the starting class from the classloader and pass it to the new ThreadFrame below. ******
+    ///curr: get the starting class from the classloader and pass it to the new ThreadFrame below. ******
     env.Globals.threadFrames.add( new ThreadFrame( ) );
 
     Uint8List bytes;
     try {
       // read the class's bytes into memory
       bytes = File( env.Globals.mainClassName ).readAsBytesSync();
-      env.Globals.logger.log( "[load:class][opened ${env.Globals.mainClassName}]", CLASS );
+      env.Globals.logger.log( "[info] starting execution with: ${env.Globals.mainClassName}", CLASS );
     }
     on FileSystemException {
       stderr.write(
-        "File ${env.Globals.mainClassName} not found or accessing it caused an error. Exiting.");
+        "File ${env.Globals.mainClassName} not found or accessing it caused an error. Exiting." );
       return;
     }
-    env.Globals.logger.log( "Main Class: ${env.Globals.mainClassName}", CLASS );
     env.Globals.userLoader.loadClass( env.Globals.mainClassName, bytes );
 
   }

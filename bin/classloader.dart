@@ -27,8 +27,8 @@ class Classloader {
   void loadClass( String name, Uint8List contents ) {
     if( validateClass( contents )) {
       if( validateSupportedJavaVersion( contents )) {
-        dir.putIfAbsent(name, () => contents);
-        env.Globals.logger.log( "Load class: $name", CLASS );
+        dir.putIfAbsent( name, () => contents );
+        env.Globals.logger.log( "[class,load] $name", CLASS );
       }
       else {
         env.Globals.logger.log( "This JVM does not support the bytecode version in: $name", SEVERE );
@@ -65,7 +65,7 @@ class Classloader {
   print() {
     for( String name in dir.keys ) {
       int classSize = dir[name].length;
-      stderr.write("class: $name size: ${classSize}\n");
+      stderr.write( "class: $name size: ${classSize}\n" );
     }
   }
 }

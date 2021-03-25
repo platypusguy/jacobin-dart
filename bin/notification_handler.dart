@@ -40,9 +40,11 @@ class NotificationHandler {
 
   void log( String msg, int level ) {
     if( msg != null && ! msg.isEmpty && logLevel >= level ) {
-      var f = NumberFormat("00000", "en_US");
+      int elapsedMillis = watch.elapsedMilliseconds;
+      double secs = elapsedMillis / 1000;
+      var f = NumberFormat( "0.000", "en_us" );
       if( level >= CLASS ) {
-        stderr.write("[${f.format(watch.elapsedMilliseconds)}ms]" );
+        stderr.write("[${f.format(secs)}s]" );
       }
 
       if( level == SEVERE ) {
