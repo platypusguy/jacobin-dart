@@ -63,9 +63,9 @@ void main( List<String> args ) {
 
     //we now have the name of the starting class and all the args. So, we begin execution.
     env.Globals.methodArea = new SplayTreeSet<Method>();
-    env.Globals.threadFrames = new Set<ThreadFrame>();
+    env.Globals.threadFrames = <ThreadFrame>{};
     ///curr: get the starting class from the classloader and pass it to the new ThreadFrame below. ******
-    env.Globals.threadFrames.add( new ThreadFrame( ) );
+    env.Globals.threadFrames.add( new ThreadFrame() );
 
     Uint8List bytes;
     try {
