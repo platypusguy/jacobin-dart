@@ -166,7 +166,11 @@ class ArgsProcessor {
   ///the usage screen that's shown the user in the case of an error in the command-line or
   ///the a request to show usage via -help and related command-line parameters
   void showUsage( IOSink stream ) {
-    stream.write( "Helpful info goes here." ); //will eventually contain the full info.
+    String usageInfo = "Usage: jacobin [options] <mainclass> [args...]\n"
+                       "          (to execute a class)\n"
+                       "    or jacobin [options] -jar <jarfile> [args...]\n"
+                       "          (to execute a jar file)\n";
+    stream.write( usageInfo ); //will eventually contain the full info.
   }
 }
 
