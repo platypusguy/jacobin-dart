@@ -8,6 +8,7 @@ library jacobin.globals;
 
 import 'dart:collection';
 import 'dart:io' show Platform;
+import 'dart:isolate';
 
 import 'classloader.dart';
 import 'method.dart';
@@ -51,6 +52,9 @@ class Globals {
 
   ///Log system and handles notifications to user
   static NotificationHandler logger;
+  static Isolate loggerIsolate;
+  static SendPort loggerSendPort;
+  static ReceivePort loggerRcvPort;
 
 }
 
