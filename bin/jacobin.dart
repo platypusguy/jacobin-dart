@@ -7,7 +7,7 @@
 ///Jacobin VM -- runs Java bytecode
 library jacobin;
 
-import 'dart:isolate';
+// import 'dart:isolate';
 import 'dart:collection';
 import 'dart:io';
 import 'dart:typed_data';
