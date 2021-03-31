@@ -31,11 +31,6 @@ void showUsage(IOSink stream) {
 
 void main( List<String> args ) {
 
-/* Attempted to create the logger as isolate.
-  startLoggerIsolate();
-  loggerSendPort.send( "*start*" );
-  loggerSendPort.send( "Hello From Isolate! Rah!" );
-*/
   try {
     // Before anything else set up the logger and start the elapsed timer
     env.Globals.logger = new NotificationHandler()
@@ -113,34 +108,7 @@ void shutdown( bool dueToError ) {
   else exit( 0 );
 }
 
-/* *** Unsuccessful attempt to set up logger as isolate ***
-void startLoggerIsolate() async {
-  var isoReceive = ReceivePort( "logger receive port" );
-  env.Globals.loggerIsolate = await Isolate.spawn( loggerAction, isoReceive.sendPort );
-  loggerSendPort =  await isoReceive.first;
-}
 
-void loggerAction( SendPort sp ) async {
-  var rp = new ReceivePort();
-  sp.send(rp.sendPort);
-
-  await for (String msg in rp) {
-    if (msg == null) return;
-
-    if (msg == "*start*") {
-      env.Globals.logger = new NotificationHandler()
-        ..start();
-    }
-    switch (msg) {
-      case "*level=FINEST*":
-        env.Globals.logger.setLogLevel(FINEST);
-        break;
-      default:
-        env.Globals.logger.log(msg, SEVERE); //TODO: figure out how to send both msg and log level
-        break;
-    }
-  }
-} */
 
 
 
